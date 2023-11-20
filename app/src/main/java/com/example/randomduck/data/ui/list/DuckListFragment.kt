@@ -26,20 +26,15 @@ class DuckListFragment : Fragment() {
         )
         return binding.root
     }
-
+/*
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var adapter = DuckAdapter(::onShowDetail)
+        var adapter = DuckAdapter
         binding.duckList.adapter = adapter
 
         val observer = Observer<List<Duck>> {
             adapter.submitList(it)
         }
         viewModel.duck.observe(viewLifecycleOwner, observer)
-    }
-
-    private fun onShowDetail(duck: Duck, view: View) {
-        val action = DuckListFragmentDirections.actionDuckListFragmentToDuckDetailFragment(duck)
-        view.findNavController().navigate(action)
-    }
+    }*/
 }

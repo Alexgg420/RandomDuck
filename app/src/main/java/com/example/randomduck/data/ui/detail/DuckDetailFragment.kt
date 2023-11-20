@@ -26,6 +26,6 @@ class DuckDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.duckImage.load(args.duck.image)
+        binding.duckImage.load(args.duck.url)
     }
 }

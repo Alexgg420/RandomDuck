@@ -17,7 +17,7 @@ class DuckAdapter(private val onShowDetail: (d: Duck, view: View) -> Unit
     inner class DuckListViewHolder(private val binding: DuckItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindDuck(d: Duck) {
-            binding.duckImage.load(d.image)
+            binding.duckImage.load(d.url)
             binding.card.setOnClickListener {
                 onShowDetail(d, binding.root)
             }

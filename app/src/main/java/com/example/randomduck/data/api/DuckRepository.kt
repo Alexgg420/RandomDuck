@@ -8,23 +8,19 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface DuckApi {
-    @GET("api/v2/randomimg}")
-    suspend fun fetchDuck(@Path("randomimg") image : String): DuckDetailResponse
-
-    @GET("api/v2/list")
-    suspend fun fetchAllDuck(): DuckListResponse
+    @GET("api/v2/random")
+    suspend fun fetchDuck(@Path("url") url: String): DuckResponse
 }
 
 class DuckRepository private constructor(private val api:DuckApi) {
-    private var _duck = MutableLiveData<DuckListApiModel>()
-    val pokemon: LiveData<DuckListApiModel>
+    private val _duck = MutableLiveData<DuckResponse>()
+    val duck: LiveData<DuckResponse>
         get() = _duck
-
     companion object {
         private var _INSTANCE: DuckRepository? = null
         fun getInstance(): DuckRepository {
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://random-d.uk/api/")
+                .baseUrl("https://random-d.uk/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             val duckApi = retrofit.create(DuckApi::class.java)
@@ -33,19 +29,10 @@ class DuckRepository private constructor(private val api:DuckApi) {
         }
     }
 
-    private fun mapDuck(duckResponse: DuckDetailResponse): DuckApiModel =
-        DuckApiModel(
-            duckResponse.image.random
-        )
+    private fun mapDuck(duckResponse: DuckResponse): DuckResponse = DuckResponse(duckResponse.url)
 
-    suspend fun fetchOnlyOneDuck(frontUrl: String): DuckApiModel = mapDuck(api.fetchDuck(frontUrl))
-
-    suspend fun fetchList() {
-        val duckListResponse = api.fetchAllDuck()
-        val duckList = duckListResponse.duckResponse.map {
-            fetchOnlyOneDuck(it.frontUrl!!)
-        }
-        val duckListApiModel = DuckListApiModel(duckList)
-        _duck.value = duckListApiModel
+    suspend fun fetchOnlyOneDuck(url: String) {
+        val duckResponse = api.fetchDuck(url)
+        _duck.value = mapDuck(duckResponse)
     }
 }

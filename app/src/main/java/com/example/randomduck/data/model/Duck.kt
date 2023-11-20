@@ -5,5 +5,5 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Duck(
-    val image: String?
+    val url: String
 ) : Parcelable
