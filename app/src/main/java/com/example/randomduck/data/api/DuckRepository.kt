@@ -8,13 +8,10 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface DuckApi {
-    @GET("api/v2/duck/{id}")
-    suspend fun fetchDuck(@Path("id") id: Int): DuckDetailResponse
+    @GET("api/v2/randomimg}")
+    suspend fun fetchDuck(@Path("randomimg") image : String): DuckDetailResponse
 
-    @GET("api/v2/duck/{name}")
-    suspend fun fetchDuck(@Path("name") name: String): DuckDetailResponse
-
-    @GET("api/v2/duck")
+    @GET("api/v2/list")
     suspend fun fetchAllDuck(): DuckListResponse
 }
 
@@ -38,18 +35,15 @@ class DuckRepository private constructor(private val api:DuckApi) {
 
     private fun mapDuck(duckResponse: DuckDetailResponse): DuckApiModel =
         DuckApiModel(
-            duckResponse.id,
-            duckResponse.sprites.frontDefault
+            duckResponse.image.random
         )
 
-    suspend fun fetchOnlyOneDuck(id: Int): DuckApiModel = mapDuck(api.fetchDuck(id))
-
-    suspend fun fetchOnlyOneDuck(name: String): DuckApiModel = mapDuck(api.fetchDuck(name))
+    suspend fun fetchOnlyOneDuck(frontUrl: String): DuckApiModel = mapDuck(api.fetchDuck(frontUrl))
 
     suspend fun fetchList() {
         val duckListResponse = api.fetchAllDuck()
-        val duckList = duckListResponse.results.map {
-            fetchOnlyOneDuck(it.name)
+        val duckList = duckListResponse.duckResponse.map {
+            fetchOnlyOneDuck(it.frontUrl!!)
         }
         val duckListApiModel = DuckListApiModel(duckList)
         _duck.value = duckListApiModel

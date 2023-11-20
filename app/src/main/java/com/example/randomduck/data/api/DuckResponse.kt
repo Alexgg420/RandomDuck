@@ -3,22 +3,13 @@ package com.example.randomduck.data.api
 import com.google.gson.annotations.SerializedName
 
 data class DuckListResponse(
-    val count: Int,
-    val next: String?,
-    val previous: String?,
-    val results: List<DuckListItemResponse>
-)
-
-data class DuckListItemResponse(
-    val name:String
+    val duckResponse: List<DuckApiModel>
 )
 
 data class DuckDetailResponse(
-    val id:Int,
-    val sprites: DuckSpritesResponse
+    val image : DuckTypeResponse
 )
-
-data class DuckSpritesResponse(
-    @SerializedName("front_default")
-    val frontDefault:String
-)
+ data class DuckTypeResponse(
+     @SerializedName("randomimg")
+     val random : String
+ )
